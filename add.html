@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ADD</title>
+    <link rel="stylesheet" type="text/css" href="add.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="nav">
+        <div class="header">
+          <h2>Guitar Inventory Manager</h2>
+        </div>
+        <div class="links">
+          <a href="add.html">Add</a>
+          <a href="search.html">Search</a>
+        </div>
+      </div>
+
+      <div class="form">
+        <div class="inputs">
+          <ul>
+            <li>
+              <h3>Serial Number</h3>
+              <input id="serial" />
+            </li>
+            <li>
+              <h3>Price</h3>
+              <input id="price" />
+            </li>
+            <li>
+              <h3>Builder</h3>
+              <input id="builder" />
+            </li>
+            <li>
+              <h3>Model</h3>
+              <input id="model" />
+            </li>
+            <li>
+              <h3>Type</h3>
+              <input id="type" />
+            </li>
+            <li>
+              <h3>TopWood</h3>
+              <input id="topWood" />
+            </li>
+            <li>
+              <h3>BackWood</h3>
+              <input id="backWood" />
+            </li>
+          </ul>
+        </div>
+        <div class="button">
+          <button onclick="addGuitar()">Add Guitar</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      async function addGuitar() {
+        let serialA = document.getElementById("serial").value;
+        let serialB = serialA.toString().toUpperCase();
+        document.getElementById("serial").value = "";
+
+        let priceA = document.getElementById("price").value;
+        document.getElementById("price").value = "";
+
+        let builderA = document.getElementById("builder").value;
+        let builderB = builderA.toString().toUpperCase();
+        document.getElementById("builder").toString().value = "";
+
+        let modelA = document.getElementById("model").value;
+        let modelB = modelA.toString().toUpperCase();
+        document.getElementById("model").toString().value = "";
+
+        let typeA = document.getElementById("type").value;
+        let typeB = typeA.toString().toUpperCase();
+        document.getElementById("type").toString().value = "";
+
+        let topWoodA = document.getElementById("topWood").value;
+        let topWoodB = topWoodA.toString().toUpperCase();
+        document.getElementById("topWood").toString().value = "";
+
+        let backWoodA = document.getElementById("backWood").value;
+        let backWoodB = backWoodA.toString().toUpperCase();
+        document.getElementById("backWood").toString().value = "";
+
+        let guitar = {
+          serialNumber: serialB,
+          price: priceA,
+          builder: builderB,
+          model: modelB,
+          type: typeB,
+          topWood: topWoodB,
+          backWood: backWoodB,
+        };
+
+        let host = "http://localhost:8081/guitar";
+        let request = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(guitar),
+        };
+
+        //for get you changed method to get and remove header and body
+        // let duckresponse = fetch
+        //ducks = awayt duckresponse.json
+
+        console.log("before fetch");
+        alert(`Sending guitar ${JSON.stringify(guitar)}`);
+        let response = await fetch(host, request);
+        let result = await response.json();
+        console.log("after fetch x is ", result);
+        alert("Guitar has been added");
+        return true;
+      }
+    </script>
+  </body>
+</html>
