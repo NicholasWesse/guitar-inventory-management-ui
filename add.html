@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ADD</title>
+    <link rel="stylesheet" href="navbar.css" />
     <link rel="stylesheet" type="text/css" href="add.css" />
   </head>
   <body>
@@ -12,10 +13,12 @@
         <div class="header">
           <h2>Guitar Inventory Manager</h2>
         </div>
-        <div class="links">
-          <a href="add.html">Add</a>
-          <a href="search.html">Search</a>
-        </div>
+        <ul class="topnav">
+          <li><a class="active" href="index.html">Home</a></li>
+          <li><a href="add.html">Add </a></li>
+          <li><a href="search.html">Search </a></li>
+          <li class="right"><a href="login.html">Login</a></li>
+        </ul>
       </div>
 
       <div class="form">
@@ -56,7 +59,7 @@
         </div>
       </div>
     </div>
-
+    <script src="configuration.js"></script>
     <script>
       async function addGuitar() {
         let serialA = document.getElementById("serial").value;
@@ -68,23 +71,23 @@
 
         let builderA = document.getElementById("builder").value;
         let builderB = builderA.toString().toUpperCase();
-        document.getElementById("builder").toString().value = "";
+        document.getElementById("builder").value = "";
 
         let modelA = document.getElementById("model").value;
         let modelB = modelA.toString().toUpperCase();
-        document.getElementById("model").toString().value = "";
+        document.getElementById("model").value = "";
 
         let typeA = document.getElementById("type").value;
         let typeB = typeA.toString().toUpperCase();
-        document.getElementById("type").toString().value = "";
+        document.getElementById("type").value = "";
 
         let topWoodA = document.getElementById("topWood").value;
         let topWoodB = topWoodA.toString().toUpperCase();
-        document.getElementById("topWood").toString().value = "";
+        document.getElementById("topWood").value = "";
 
         let backWoodA = document.getElementById("backWood").value;
         let backWoodB = backWoodA.toString().toUpperCase();
-        document.getElementById("backWood").toString().value = "";
+        document.getElementById("backWood").value = "";
 
         let guitar = {
           serialNumber: serialB,
@@ -96,11 +99,12 @@
           backWood: backWoodB,
         };
 
-        let host = "https://guitar-inventory-management-latest-zot3.onrender.com";
+        let host = getHost();
         let request = {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${configuration.token()}`,
           },
           body: JSON.stringify(guitar),
         };
@@ -112,6 +116,10 @@
         console.log("before fetch");
         alert(`Sending guitar ${JSON.stringify(guitar)}`);
         let response = await fetch(host, request);
+        if (response.status == 401) {
+          logout();
+        }
+
         let result = await response.json();
         console.log("after fetch x is ", result);
         alert("Guitar has been added");
